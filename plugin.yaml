@@ -1,0 +1,8 @@
+title: Parallel Swarm
+description: Run multiple agents in parallel with fan-out/fan-in execution. Task dependency resolution, token budget management, shared memory between agents, and dynamic model routing by complexity.
+version: 1.0.0
+settings_sections:
+  - agent
+per_project_config: false
+per_agent_config: true
+always_enabled: false

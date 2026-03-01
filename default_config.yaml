@@ -1,0 +1,23 @@
+# Parallel Swarm Plugin — Default Configuration
+
+# Maximum concurrent agents (adjust based on your hardware/API rate limits)
+max_concurrency: 5
+
+# Total token budget across all parallel tasks (prevents runaway costs)
+token_budget: 100000
+
+# Per-task token budget (individual task cap)
+per_task_budget: 20000
+
+# Auto-classify task complexity (uses LLM to route simple/moderate/complex tasks to appropriate models)
+auto_classify: true
+
+# Model overrides by complexity tier (leave empty to use agent's default model)
+# simple_model: ""
+# complex_model: ""
+
+# Backpressure threshold (0.0-1.0) — throttle when this % of slots are active
+backpressure_threshold: 0.8
+
+# Enable shared memory between parallel agents (federated learning)
+shared_memory: true

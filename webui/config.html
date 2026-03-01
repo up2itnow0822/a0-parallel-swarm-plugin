@@ -1,0 +1,92 @@
+<html>
+<head>
+  <title>Parallel Swarm Settings</title>
+  <script type="module">
+    import { store } from "/components/plugins/plugin-settings-store.js";
+  </script>
+</head>
+<body>
+  <div x-data>
+    <template x-if="$store.pluginSettings">
+      <div>
+        <h3 style="margin-bottom: 12px; color: #e2e8f0;">⚡ Swarm Configuration</h3>
+
+        <!-- Max Concurrency -->
+        <div style="margin-bottom: 16px;">
+          <label style="display: block; margin-bottom: 4px; color: #94a3b8; font-size: 13px;">Max Concurrent Agents</label>
+          <input type="number"
+                 x-model.number="$store.pluginSettings.settings.max_concurrency"
+                 min="1" max="20" step="1"
+                 style="width: 100%; padding: 8px 12px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #e2e8f0;" />
+          <span style="font-size: 11px; color: #64748b;">Number of agents that can run in parallel. Higher = faster but more API calls.</span>
+        </div>
+
+        <!-- Token Budget -->
+        <div style="margin-bottom: 16px;">
+          <label style="display: block; margin-bottom: 4px; color: #94a3b8; font-size: 13px;">Total Token Budget</label>
+          <input type="number"
+                 x-model.number="$store.pluginSettings.settings.token_budget"
+                 min="10000" step="10000"
+                 style="width: 100%; padding: 8px 12px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #e2e8f0;" />
+          <span style="font-size: 11px; color: #64748b;">Total tokens all parallel agents can consume per swarm dispatch.</span>
+        </div>
+
+        <!-- Per-Task Budget -->
+        <div style="margin-bottom: 16px;">
+          <label style="display: block; margin-bottom: 4px; color: #94a3b8; font-size: 13px;">Per-Task Token Budget</label>
+          <input type="number"
+                 x-model.number="$store.pluginSettings.settings.per_task_budget"
+                 min="1000" step="5000"
+                 style="width: 100%; padding: 8px 12px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #e2e8f0;" />
+          <span style="font-size: 11px; color: #64748b;">Max tokens per individual task.</span>
+        </div>
+
+        <!-- Auto-Classify -->
+        <div style="margin-bottom: 16px;">
+          <label style="display: flex; align-items: center; gap: 8px; color: #94a3b8; font-size: 13px; cursor: pointer;">
+            <input type="checkbox"
+                   x-model="$store.pluginSettings.settings.auto_classify"
+                   style="width: 16px; height: 16px;" />
+            Auto-classify task complexity
+          </label>
+          <span style="font-size: 11px; color: #64748b; margin-left: 24px;">Routes simple/moderate/complex tasks to different models automatically.</span>
+        </div>
+
+        <!-- Shared Memory -->
+        <div style="margin-bottom: 16px;">
+          <label style="display: flex; align-items: center; gap: 8px; color: #94a3b8; font-size: 13px; cursor: pointer;">
+            <input type="checkbox"
+                   x-model="$store.pluginSettings.settings.shared_memory"
+                   style="width: 16px; height: 16px;" />
+            Enable shared memory (federated learning)
+          </label>
+          <span style="font-size: 11px; color: #64748b; margin-left: 24px;">Parallel agents can share findings in real-time via swarm_share tool.</span>
+        </div>
+
+        <h3 style="margin: 20px 0 12px; color: #e2e8f0;">🧠 Model Routing (Optional)</h3>
+
+        <!-- Simple Model Override -->
+        <div style="margin-bottom: 16px;">
+          <label style="display: block; margin-bottom: 4px; color: #94a3b8; font-size: 13px;">Simple Tasks Model</label>
+          <input type="text"
+                 x-model="$store.pluginSettings.settings.simple_model"
+                 placeholder="(use agent default)"
+                 style="width: 100%; padding: 8px 12px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #e2e8f0;" />
+          <span style="font-size: 11px; color: #64748b;">Use a cheaper/faster model for simple tasks (e.g., gpt-4o-mini).</span>
+        </div>
+
+        <!-- Complex Model Override -->
+        <div style="margin-bottom: 16px;">
+          <label style="display: block; margin-bottom: 4px; color: #94a3b8; font-size: 13px;">Complex Tasks Model</label>
+          <input type="text"
+                 x-model="$store.pluginSettings.settings.complex_model"
+                 placeholder="(use agent default)"
+                 style="width: 100%; padding: 8px 12px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #e2e8f0;" />
+          <span style="font-size: 11px; color: #64748b;">Use a more capable model for complex tasks (e.g., claude-opus).</span>
+        </div>
+
+      </div>
+    </template>
+  </div>
+</body>
+</html>
