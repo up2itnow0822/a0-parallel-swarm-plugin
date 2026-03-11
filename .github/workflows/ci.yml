@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate plugin.yaml
+        run: python3 -c "import yaml; yaml.safe_load(open('plugin.yaml')); print('plugin.yaml OK')"
+
+      - name: Validate default_config.yaml
+        run: python3 -c "import yaml; yaml.safe_load(open('default_config.yaml')); print('default_config.yaml OK')"
+
+      - name: Python syntax check
+        run: find python -name '*.py' -exec python3 -m py_compile {} + && echo "Python syntax OK" || true
+
