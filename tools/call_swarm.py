@@ -80,7 +80,6 @@ class SwarmDelegation(Tool):
 
         # Get usage report for logging
         usage = await orchestrator.token_pool.get_usage_report()
-        status = orchestrator.get_status()
 
         # Summary line
         completed = sum(1 for t in orchestrator.tasks.values() if t.status == TaskStatus.COMPLETED)

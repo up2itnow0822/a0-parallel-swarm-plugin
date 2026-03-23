@@ -1,5 +1,4 @@
 import asyncio
-import time
 import uuid
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -14,7 +13,7 @@ from plugins.parallel_swarm.python.helpers import model_router
 from plugins.parallel_swarm.python.helpers.model_router import TaskComplexity
 
 if TYPE_CHECKING:
-    from agent import Agent, AgentConfig
+    from agent import Agent
 
 
 class TaskStatus(Enum):
@@ -84,7 +83,6 @@ class SwarmOrchestrator:
 
         Returns dict of task_id -> result string.
         """
-        from agent import Agent
 
         # Register tasks
         for task in tasks:

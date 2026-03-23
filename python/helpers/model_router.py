@@ -1,10 +1,8 @@
-import re
 from enum import Enum
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from agent import Agent, AgentConfig
-    from models import ModelConfig
 
 
 class TaskComplexity(Enum):
