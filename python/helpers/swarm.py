@@ -5,7 +5,7 @@ from datetime import datetime
 from enum import Enum
 from typing import TYPE_CHECKING, Any
 
-from python.helpers.print_style import PrintStyle
+from helpers.print_style import PrintStyle
 from plugins.parallel_swarm.python.helpers.token_pool import TokenPool
 from plugins.parallel_swarm.python.helpers.concurrency import ConcurrencyManager
 from plugins.parallel_swarm.python.helpers.swarm_memory import SwarmMemory

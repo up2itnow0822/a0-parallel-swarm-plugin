@@ -1,7 +1,7 @@
-from python.helpers.tool import Tool, Response
+from helpers.tool import Tool, Response
 from plugins.parallel_swarm.python.helpers.swarm import SwarmOrchestrator, SwarmTask, TaskStatus
 from plugins.parallel_swarm.python.helpers.model_router import TaskComplexity
-from python.helpers import dirty_json
+from helpers import dirty_json
 from agent import Agent
 
 
