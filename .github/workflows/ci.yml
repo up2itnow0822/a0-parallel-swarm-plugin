@@ -1,4 +1,4 @@
-name: CI
+name: CI — Parallel Swarm Plugin
 
 on:
   push:
@@ -7,15 +7,39 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  validate:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+
     steps:
       - uses: actions/checkout@v4
-      - name: Use Node.js
-        uses: actions/setup-node@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
         with:
-          node-version: "20"
-      - name: Install dependencies
-        run: npm install --if-present || true
-      - name: Run tests
-        run: npm test --if-present || echo "No tests configured yet"
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install linters
+        run: pip install ruff bandit mypy
+
+      - name: Compile check
+        run: |
+          find . -name "*.py" -not -path "./.git/*" | while read f; do
+            python -m py_compile "$f" || exit 1
+          done
+
+      - name: Lint (Ruff)
+        run: ruff check .
+
+      - name: Security (Bandit)
+        run: bandit -r python/ tools/ -ll --quiet
+
+      - name: Type check (mypy)
+        run: mypy python/ tools/ --ignore-missing-imports --no-error-summary || true
+
+      - name: Secrets scan
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

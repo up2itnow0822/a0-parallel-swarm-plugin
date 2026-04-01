@@ -122,13 +122,13 @@ class SwarmOrchestrator:
                 if isinstance(result, Exception):
                     task.status = TaskStatus.FAILED
                     task.error = str(result)
-                    task.result = f"Error: {result}"
+                    task.result = f"Error: {str(result)}"
                     results[task.id] = task.result
                     PrintStyle(font_color="red", padding=True).print(
-                        f"Swarm task '{task.description}' failed: {result}"
+                        f"Swarm task '{task.description}' failed: {str(result)}"
                     )
                 else:
-                    results[task.id] = result or ""
+                    results[task.id] = str(result) if result else ""
 
         # Call post-dispatch extensions
         await self.parent_agent.call_extensions(
