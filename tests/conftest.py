@@ -9,8 +9,13 @@ import sys
 import types
 import asyncio
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Any
 from unittest.mock import AsyncMock, MagicMock
+
+# Resolve repo root dynamically so tests work from any working directory
+_REPO_ROOT = Path(__file__).parent.parent.resolve()
+_PYTHON_DIR = _REPO_ROOT / "python"
 
 import pytest
 
@@ -177,15 +182,15 @@ def _install_a0_stubs():
     sys.modules.setdefault("plugins", plugins_pkg)
 
     ps_pkg = types.ModuleType("plugins.parallel_swarm")
-    ps_pkg.__path__ = ["/tmp/a0-parallel-swarm-plugin"]
+    ps_pkg.__path__ = [str(_REPO_ROOT)]
     sys.modules["plugins.parallel_swarm"] = ps_pkg
 
     ps_python = types.ModuleType("plugins.parallel_swarm.python")
-    ps_python.__path__ = ["/tmp/a0-parallel-swarm-plugin/python"]
+    ps_python.__path__ = [str(_REPO_ROOT / "python")]
     sys.modules["plugins.parallel_swarm.python"] = ps_python
 
     ps_helpers = types.ModuleType("plugins.parallel_swarm.python.helpers")
-    ps_helpers.__path__ = ["/tmp/a0-parallel-swarm-plugin/python/helpers"]
+    ps_helpers.__path__ = [str(_REPO_ROOT / "python" / "helpers")]
     sys.modules["plugins.parallel_swarm.python.helpers"] = ps_helpers
 
 
