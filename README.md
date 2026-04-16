@@ -1,5 +1,8 @@
 # ⚡ Parallel Swarm — A0 Plugin
 
+[![CI](https://github.com/up2itnow0822/a0-parallel-swarm-plugin/actions/workflows/ci.yml/badge.svg)](https://github.com/up2itnow0822/a0-parallel-swarm-plugin/actions/workflows/ci.yml)
+[![Release Plugin Bundle](https://github.com/up2itnow0822/a0-parallel-swarm-plugin/actions/workflows/release.yml/badge.svg)](https://github.com/up2itnow0822/a0-parallel-swarm-plugin/actions/workflows/release.yml)
+
 Run multiple Agent Zero agents at the same time. Fan out tasks, collect results, share findings between agents mid-execution.
 
 We built this because we needed our A0 agents to research 5 markets simultaneously instead of crawling through them one by one. Turns out it's useful for a lot more than that.

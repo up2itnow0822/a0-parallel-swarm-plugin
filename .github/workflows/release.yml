@@ -1,0 +1,44 @@
+name: Release Plugin Bundle
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create plugin bundle
+        run: |
+          mkdir -p dist
+          zip -r "dist/parallel_swarm-${GITHUB_REF_NAME:-${GITHUB_SHA::7}}.zip" \
+            plugin.yaml \
+            hooks.py \
+            default_config.yaml \
+            python \
+            tools \
+            webui \
+            README.md \
+            LICENSE \
+            CHANGELOG.md
+
+      - name: Upload bundle artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: parallel-swarm-plugin-bundle
+          path: dist/*.zip
+
+      - name: Publish GitHub release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.zip
+          generate_release_notes: true
