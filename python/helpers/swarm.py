@@ -41,6 +41,7 @@ class SwarmTask:
     agent_number: int | None = None
     created_at: datetime = field(default_factory=datetime.now)
     completed_at: datetime | None = None
+    _auto_classified: bool = False
 
 
 class SwarmOrchestrator:
@@ -255,15 +256,20 @@ class SwarmOrchestrator:
         }
 
     async def _classify_tasks(self):
-        """Classify complexity for all tasks that don't have explicit complexity."""
+        """Classify complexity for tasks marked as auto-classified.
+
+        Only tasks where no explicit complexity was provided by the caller
+        (flagged via _auto_classified=True) are reclassified. User-provided
+        complexity values are preserved.
+        """
         for task in self.tasks.values():
-            if task.complexity == TaskComplexity.MODERATE:
-                # Only reclassify if it was the default
-                task.complexity = await model_router.classify_complexity(
-                    task.description,
-                    self.parent_agent,
-                    use_llm=self.auto_classify,
-                )
+            if not task._auto_classified:
+                continue  # user explicitly set complexity — don't touch
+            task.complexity = await model_router.classify_complexity(
+                task.description,
+                self.parent_agent,
+                use_llm=self.auto_classify,
+            )
 
     def _build_execution_levels(self) -> list[list[SwarmTask]]:
         """Build dependency DAG and return tasks grouped by execution level.

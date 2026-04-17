@@ -1,88 +1,133 @@
 <html>
 <head>
   <title>Parallel Swarm Settings</title>
-  <script type="module">
-    
-  </script>
+  <style>
+    .ps-section-title {
+      margin-bottom: 12px;
+      color: #e2e8f0;
+    }
+    .ps-section-title-spaced {
+      margin: 20px 0 12px;
+      color: #e2e8f0;
+    }
+    .ps-field {
+      margin-bottom: 16px;
+    }
+    .ps-label {
+      display: block;
+      margin-bottom: 4px;
+      color: #94a3b8;
+      font-size: 13px;
+    }
+    .ps-input {
+      width: 100%;
+      padding: 8px 12px;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      color: #e2e8f0;
+    }
+    .ps-hint {
+      font-size: 11px;
+      color: #64748b;
+    }
+    .ps-hint-indent {
+      font-size: 11px;
+      color: #64748b;
+      margin-left: 24px;
+    }
+    .ps-checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #94a3b8;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .ps-checkbox {
+      width: 16px;
+      height: 16px;
+    }
+  </style>
 </head>
 <body>
   <div x-data>
     <template x-if="context">
       <div>
-        <h3 style="margin-bottom: 12px; color: #e2e8f0;">⚡ Swarm Configuration</h3>
+        <h3 class="ps-section-title">⚡ Swarm Configuration</h3>
 
         <!-- Max Concurrency -->
-        <div style="margin-bottom: 16px;">
-          <label style="display: block; margin-bottom: 4px; color: #94a3b8; font-size: 13px;">Max Concurrent Agents</label>
+        <div class="ps-field">
+          <label class="ps-label">Max Concurrent Agents</label>
           <input type="number"
                  x-model.number="config.max_concurrency"
                  min="1" max="20" step="1"
-                 style="width: 100%; padding: 8px 12px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #e2e8f0;" />
-          <span style="font-size: 11px; color: #64748b;">Number of agents that can run in parallel. Higher = faster but more API calls.</span>
+                 class="ps-input" />
+          <span class="ps-hint">Number of agents that can run in parallel. Higher = faster but more API calls.</span>
         </div>
 
         <!-- Token Budget -->
-        <div style="margin-bottom: 16px;">
-          <label style="display: block; margin-bottom: 4px; color: #94a3b8; font-size: 13px;">Total Token Budget</label>
+        <div class="ps-field">
+          <label class="ps-label">Total Token Budget</label>
           <input type="number"
                  x-model.number="config.token_budget"
                  min="10000" step="10000"
-                 style="width: 100%; padding: 8px 12px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #e2e8f0;" />
-          <span style="font-size: 11px; color: #64748b;">Total tokens all parallel agents can consume per swarm dispatch.</span>
+                 class="ps-input" />
+          <span class="ps-hint">Total tokens all parallel agents can consume per swarm dispatch.</span>
         </div>
 
         <!-- Per-Task Budget -->
-        <div style="margin-bottom: 16px;">
-          <label style="display: block; margin-bottom: 4px; color: #94a3b8; font-size: 13px;">Per-Task Token Budget</label>
+        <div class="ps-field">
+          <label class="ps-label">Per-Task Token Budget</label>
           <input type="number"
                  x-model.number="config.per_task_budget"
                  min="1000" step="5000"
-                 style="width: 100%; padding: 8px 12px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #e2e8f0;" />
-          <span style="font-size: 11px; color: #64748b;">Max tokens per individual task.</span>
+                 class="ps-input" />
+          <span class="ps-hint">Max tokens per individual task.</span>
         </div>
 
         <!-- Auto-Classify -->
-        <div style="margin-bottom: 16px;">
-          <label style="display: flex; align-items: center; gap: 8px; color: #94a3b8; font-size: 13px; cursor: pointer;">
+        <div class="ps-field">
+          <label class="ps-checkbox-label">
             <input type="checkbox"
                    x-model="config.auto_classify"
-                   style="width: 16px; height: 16px;" />
+                   class="ps-checkbox" />
             Auto-classify task complexity
           </label>
-          <span style="font-size: 11px; color: #64748b; margin-left: 24px;">Routes simple/moderate/complex tasks to different models automatically.</span>
+          <span class="ps-hint-indent">Routes simple/moderate/complex tasks to different models automatically.</span>
         </div>
 
         <!-- Shared Memory -->
-        <div style="margin-bottom: 16px;">
-          <label style="display: flex; align-items: center; gap: 8px; color: #94a3b8; font-size: 13px; cursor: pointer;">
+        <div class="ps-field">
+          <label class="ps-checkbox-label">
             <input type="checkbox"
                    x-model="config.shared_memory"
-                   style="width: 16px; height: 16px;" />
+                   class="ps-checkbox" />
             Enable shared memory (federated learning)
           </label>
-          <span style="font-size: 11px; color: #64748b; margin-left: 24px;">Parallel agents can share findings in real-time via swarm_share tool.</span>
+          <span class="ps-hint-indent">Parallel agents can share findings in real-time via swarm_share tool.</span>
         </div>
 
-        <h3 style="margin: 20px 0 12px; color: #e2e8f0;">🧠 Model Routing (Optional)</h3>
+        <h3 class="ps-section-title-spaced">🧠 Model Routing (Optional)</h3>
 
         <!-- Simple Model Override -->
-        <div style="margin-bottom: 16px;">
-          <label style="display: block; margin-bottom: 4px; color: #94a3b8; font-size: 13px;">Simple Tasks Model</label>
+        <div class="ps-field">
+          <label class="ps-label">Simple Tasks Model</label>
           <input type="text"
                  x-model="config.simple_model"
                  placeholder="(use agent default)"
-                 style="width: 100%; padding: 8px 12px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #e2e8f0;" />
-          <span style="font-size: 11px; color: #64748b;">Use a cheaper/faster model for simple tasks (e.g., gpt-4o-mini).</span>
+                 class="ps-input" />
+          <span class="ps-hint">Use a cheaper/faster model for simple tasks (e.g., gpt-4o-mini).</span>
         </div>
 
         <!-- Complex Model Override -->
-        <div style="margin-bottom: 16px;">
-          <label style="display: block; margin-bottom: 4px; color: #94a3b8; font-size: 13px;">Complex Tasks Model</label>
+        <div class="ps-field">
+          <label class="ps-label">Complex Tasks Model</label>
           <input type="text"
                  x-model="config.complex_model"
                  placeholder="(use agent default)"
-                 style="width: 100%; padding: 8px 12px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #e2e8f0;" />
-          <span style="font-size: 11px; color: #64748b;">Use a more capable model for complex tasks (e.g., claude-opus).</span>
+                 class="ps-input" />
+          <span class="ps-hint">Use a more capable model for complex tasks (e.g., claude-opus).</span>
         </div>
 
       </div>

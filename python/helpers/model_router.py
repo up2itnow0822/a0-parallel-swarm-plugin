@@ -67,11 +67,12 @@ async def classify_with_llm(task_description: str, agent: "Agent") -> TaskComple
             message=CLASSIFY_PROMPT.format(task_description=task_description),
             background=True,
         )
-        response = response.strip().upper()
-        if "SIMPLE" in response:
-            return TaskComplexity.SIMPLE
-        elif "COMPLEX" in response:
+        response_up = response.strip().upper()
+        first_word = response_up.split()[0] if response_up else ""
+        if first_word == "COMPLEX":
             return TaskComplexity.COMPLEX
+        elif first_word == "SIMPLE":
+            return TaskComplexity.SIMPLE
         else:
             return TaskComplexity.MODERATE
     except Exception:

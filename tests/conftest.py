@@ -100,6 +100,31 @@ def _install_a0_stubs():
     sys.modules["helpers.strings"] = strings_mod
     helpers_pkg.strings = strings_mod
 
+    # --- python.helpers.* aliases ---
+    # Agent Zero's actual package layout is python.helpers.*, not helpers.*.
+    # The plugin's tools import from python.helpers.tool and python.helpers.
+    # We register parallel aliases pointing at the same stub modules so both
+    # import paths resolve in tests.
+    python_pkg = types.ModuleType("python")
+    python_pkg.__path__ = []
+    sys.modules.setdefault("python", python_pkg)
+
+    python_helpers_pkg = types.ModuleType("python.helpers")
+    python_helpers_pkg.__path__ = []
+    python_helpers_pkg.dirty_json = dirty_json_mod
+    python_helpers_pkg.print_style = print_style_mod
+    python_helpers_pkg.tool = tool_mod
+    python_helpers_pkg.extension = ext_mod
+    python_helpers_pkg.strings = strings_mod
+    sys.modules["python.helpers"] = python_helpers_pkg
+    python_pkg.helpers = python_helpers_pkg
+
+    sys.modules["python.helpers.tool"] = tool_mod
+    sys.modules["python.helpers.dirty_json"] = dirty_json_mod
+    sys.modules["python.helpers.print_style"] = print_style_mod
+    sys.modules["python.helpers.extension"] = ext_mod
+    sys.modules["python.helpers.strings"] = strings_mod
+
     # --- agent module ---
     agent_mod = types.ModuleType("agent")
 

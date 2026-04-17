@@ -21,14 +21,18 @@ jobs:
           mkdir -p dist
           zip -r "dist/parallel_swarm-${GITHUB_REF_NAME:-${GITHUB_SHA::7}}.zip" \
             plugin.yaml \
-            hooks.py \
             default_config.yaml \
             python \
             tools \
             webui \
+            tests \
             README.md \
             LICENSE \
-            CHANGELOG.md
+            CHANGELOG.md \
+            CONTRIBUTING.md \
+            requirements.txt \
+            requirements-dev.txt \
+            pytest.ini
 
       - name: Upload bundle artifact
         uses: actions/upload-artifact@v4

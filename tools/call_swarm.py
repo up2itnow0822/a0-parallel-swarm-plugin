@@ -1,7 +1,7 @@
-from helpers.tool import Tool, Response
+from python.helpers.tool import Tool, Response
 from plugins.parallel_swarm.python.helpers.swarm import SwarmOrchestrator, SwarmTask, TaskStatus
 from plugins.parallel_swarm.python.helpers.model_router import TaskComplexity
-from helpers import dirty_json
+from python.helpers import dirty_json
 from agent import Agent
 
 
@@ -32,13 +32,17 @@ class SwarmDelegation(Tool):
             if not isinstance(t, dict):
                 continue
 
-            # Parse complexity if provided
+            # Parse complexity if provided. Track whether the caller provided
+            # an explicit value so _classify_tasks knows what to reclassify.
             complexity = TaskComplexity.MODERATE
             complexity_str = str(t.get("complexity", "")).lower()
+            explicit_complexity = complexity_str in ("simple", "moderate", "complex")
             if complexity_str == "simple":
                 complexity = TaskComplexity.SIMPLE
             elif complexity_str == "complex":
                 complexity = TaskComplexity.COMPLEX
+            elif complexity_str == "moderate":
+                complexity = TaskComplexity.MODERATE
 
             task = SwarmTask(
                 id=str(t.get("id", f"task_{i}")),
@@ -49,6 +53,7 @@ class SwarmDelegation(Tool):
                 priority=int(t.get("priority", 0)),
                 dependencies=t.get("depends_on", []) or [],
                 token_budget=int(t.get("token_budget", 0)),
+                _auto_classified=not explicit_complexity,
             )
             swarm_tasks.append(task)
 
