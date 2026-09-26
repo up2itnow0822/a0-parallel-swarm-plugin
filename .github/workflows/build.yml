@@ -62,17 +62,20 @@ jobs:
               if grep -q '\[tool\.poetry\]' pyproject.toml 2>/dev/null; then
                 pip install poetry
                 poetry install --no-interaction
-                poetry run pytest -q || poetry run python -m compileall -q .
+                poetry run python -m compileall -q .
+                poetry run pytest -q
               else
                 pip install -e ".[dev]" 2>/dev/null || pip install -e . 2>/dev/null || true
                 if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
                 if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
-                pytest -q 2>/dev/null || python -m compileall -q .
+                python -m compileall -q .
+                pytest -q
               fi
             else
               if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
               if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
-              pytest -q 2>/dev/null || python -m compileall -q .
+              python -m compileall -q .
+              pytest -q
             fi
             exit 0
           fi
